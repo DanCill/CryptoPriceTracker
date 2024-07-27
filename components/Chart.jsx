@@ -1,6 +1,7 @@
 import { View, Text, Image, Dimensions } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LineChart } from "react-native-wagmi-charts";
+import { useSharedValue } from "react-native-reanimated";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -13,8 +14,14 @@ const Chart = ({
   sparkline,
   symbol,
 }) => {
+  const latestCurrentPrice = useSharedValue(currentPrice);
+
   const priceChangeColor =
     priceChangePercentage7d > 0 ? "text-[#34C759]" : "text-[#FF3B30]";
+
+  useEffect(() => {
+    latestCurrentPrice.value = currentPrice;
+  }, [currentPrice]);
 
   return (
     <LineChart.Provider data={sparkline}>
@@ -33,9 +40,17 @@ const Chart = ({
             <Text className="text-[14px] text-[#A9ABB1]">7d</Text>
           </View>
           <View className="flex-row justify-between items-center">
-            <Text className="text-[24px] text-black font-bold">
-              ${currentPrice.toLocaleString("en-US", { currency: "USD" })}
-            </Text>
+            <LineChart.PriceText
+              className="text-[24px] text-black font-bold"
+              format={(d) => {
+                "worklet";
+                return d.formatted
+                  ? `$${d.formatted} USD`
+                  : `$${latestCurrentPrice.value.toLocaleString("en-US", {
+                      currency: "USD",
+                    })}`;
+              }}
+            />
             <Text className={`text-[18px] ${priceChangeColor}`}>
               {priceChangePercentage7d.toFixed(2)}%
             </Text>

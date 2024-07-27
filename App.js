@@ -17,6 +17,7 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Chart from "./components/Chart";
 import { getMarketData } from "./services/cryptoService";
+import { SAMPLE_DATA } from "./assets/data/sampleData";
 
 export default function App() {
   const [data, setData] = useState([]);

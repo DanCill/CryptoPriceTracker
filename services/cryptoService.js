@@ -34,13 +34,13 @@ export const getMarketData = async () => {
       {
         headers: {
           accept: "application/json",
-          "x-cg-demo-api-key": "API_KEY_HERE",
+          "x-cg-demo-api-key": "YOUR_API_KEY_HERE",
         },
       }
     );
     const data = response.data;
     const formattedResponse = formatMarketData(data);
-    return formattedRespoanse;
+    return formattedResponse;
   } catch (error) {
     console.error(error);
     throw error;
